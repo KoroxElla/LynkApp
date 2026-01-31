@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Home from "./home/Home";
 import TearPanel from "./TearPanel";
 import Zipper from "../Components/Zipper";
@@ -15,7 +15,9 @@ function AuthPage() {
   ];
 
   const [mode, setMode] = useState('signup');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState(null);
   const [splitContent, setSplitContent] = useState('signup');
@@ -59,13 +61,23 @@ function AuthPage() {
     if (found) {
       setLoginError('');
       setLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', loginEmail);
     } else {
       setLoginError('Invalid email or password');
     }
   }
 
+  function handleLogout() {
+    setLoggedIn(false);
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    setLoginEmail('');
+    setLoginPassword('');
+  }
+
   // Show homepage if logged in
-  if (loggedIn) return <Home />;
+  if (loggedIn) return <Home onLogout={handleLogout} />;
 
   return (
     <div className="auth-container">
