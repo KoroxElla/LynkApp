@@ -8,6 +8,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const togglePasswordView = () => setShowPassword(!showPassword);
 
@@ -44,6 +46,8 @@ const Login = () => {
             type="email"
             placeholder="Email address"
             className="bg-transparent w-full outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -54,6 +58,8 @@ const Login = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             className="bg-transparent w-full outline-none"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           {showPassword ? (
